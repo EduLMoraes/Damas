@@ -13,7 +13,7 @@ updating your packages:
 
 And this for installing at last version:
     
-    sudo apt install python
+    sudo apt install python3
 
 
 ### For Windows users
