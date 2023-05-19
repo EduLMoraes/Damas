@@ -11,27 +11,26 @@ class Game(arcade.Window):
         arcade.set_background_color((255, 255, 255))
 
     def on_draw(self):
-        w_position = []
-        b_position = []
+
+        self.clear()
+        arcade.start_render()
+        
+        plane = boardDrawing.BoardDrawing(self)
+        plane.draw_board()
+
+        piece = pieceDrawing.PartDrawing(self)
 
         for x in range(8):
             for y in range(8):
                 if self.board[x][y] == "w":
-                    w_position.append([x, y])
+                    piece.draw_part([[x, y, "w"]])
                 elif self.board[x][y] == "b":
-                    b_position.append([x, y])
+                    piece.draw_part([[x, y, "b"]])
+                elif self.board[x][y] == "W":
+                    piece.draw_part([[x, y, "W"]])
+                elif self.board[x][y] == "B":
+                    piece.draw_part([[x, y, "B"]])
 
-        self.clear()
-        arcade.start_render()
-
-        plane = boardDrawing.BoardDrawing(self)
-        plane.draw_board()
-
-        piece = pieceDrawing.PartDrawing(self, w_position)
-        piece.draw_part("w")
-
-        piece = pieceDrawing.PartDrawing(self, b_position)
-        piece.draw_part("b")
 
     def on_mouse_press(self, x, y, button, modifiers):
         x = int(x / 70)
@@ -42,9 +41,12 @@ class Game(arcade.Window):
 
         if self.board[x][y] != "none" and self.click == True:
             self.isValid = isValid.IsValid(self.board)
-            self.isValid.position([x, y], self.board[x][y])
+            position = self.isValid.position([x, y], self.board[x][y])
 
-            self.click = False
+            if position:
+                self.click = False
+            else:
+                self.click = True
 
         elif self.click == False and self.board[x][y] == "none":
             self.board = self.isValid.new_position([x, y])
