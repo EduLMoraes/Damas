@@ -15,7 +15,7 @@ class PartDrawing:
             elif i[2] == "b":
                 self.color = arcade.color.GRAY
             elif i[2] == "W":
-                self.color = arcade.color.LIGHT_GOLDENROD_YELLOW
+                self.color = arcade.color.GOLDENROD
             else:
                 self.color = arcade.color.DARK_SLATE_GRAY
 
