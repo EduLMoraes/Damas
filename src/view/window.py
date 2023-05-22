@@ -18,6 +18,24 @@ class Game(arcade.Window):
         plane = boardDrawing.BoardDrawing(self)
         plane.draw_board()
 
+        whites = []
+        grays = []
+
+        for x in range(8):
+            for y in range(8):
+                if self.board[x][y] != "none":
+                    if self.board[x][y].lower() == "b":
+                        grays.append(self.board[x][y])
+                    else:
+                        whites.append(self.board[x][y])
+        
+        if len(whites) < 1:
+            arcade.draw_text("Vitória das pretas", 150, 250, arcade.color.RED_DEVIL, 30)
+        elif len(grays) < 1:
+            arcade.draw_text("Vitória das brancas", 150, 250, arcade.color.RED_DEVIL, 30)
+
+ 
+
         piece = pieceDrawing.PartDrawing(self)
 
         for x in range(8):

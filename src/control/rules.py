@@ -1,7 +1,7 @@
 class Rules:
     points_b = 0
     points_w = 0
-    name = None
+    name = ""
 
     def __new__(cls, board):
         if not hasattr(cls, "instance"):
@@ -65,7 +65,7 @@ class Rules:
         return False
     
     def turn(self, name, position = [None, None]):
-        if name == self.name:
+        if name.lower() == self.name.lower():
             return False
         
         print(">> rules: é combo?", self.is_combo(position))

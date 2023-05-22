@@ -75,31 +75,50 @@ class IsValid:
 
                         return self.move.move()
 
-        print(">> isValid: Movimento inválido.")        
+
+        if self.name.lower() == "w":
+            self.rule.turn("b") 
+        else:
+            self.rule.turn("w")    
+
+        print(">> isValid: Movimento inválido, tente novamente.")
         return self.board
             
     def is_jump(self, new_position, piece):
         if (self.name.upper() == piece.upper() or new_position[0]+1 > 7 or new_position[0]-1 < 0
             or new_position[1]+1 > 7 or new_position[1]-1 < 0):
 
-            print(">> isValid: Movimento inválido.")
+            if self.name.lower() == "w":
+                self.rule.turn("b") 
+            else:
+                self.rule.turn("w")
+
+            print(">> isValid: Movimento inválido, tente novamente.")
             return self.board
         
         if new_position[0] > self.x and new_position[1] > self.y:
             self.new_x = new_position[0]+1
             self.new_y = new_position[1]+1
+            duble_x = new_position[0]-1
+            duble_y = new_position[1]-1
         
         elif new_position[0] < self.x and new_position[1] > self.y:
             self.new_x = new_position[0]-1
             self.new_y = new_position[1]+1
+            duble_x = new_position[0]+1
+            duble_y = new_position[1]-1
         
         elif new_position[0] < self.x and new_position[1] < self.y:
             self.new_x = new_position[0]-1
             self.new_y = new_position[1]-1
+            duble_x = new_position[0]+1
+            duble_y = new_position[1]+1
 
         else:
             self.new_x = new_position[0]+1
             self.new_y = new_position[1]-1
+            duble_x = new_position[0]-1
+            duble_y = new_position[1]+1
 
         if self.name == "b" or self.name == "w":
             for i in [1, -1]:
@@ -109,21 +128,33 @@ class IsValid:
                             self.rule.turn(self.name, [self.new_x, self.new_y])
 
                             for k in range(0, 7):
-                                if self.new_x == k and self.new_y == 7:
-                                    self.board[self.x][self.y] = self.board[self.x][self.y].upper()
-                                    self.move = moves.Move(self.board)
-                                    self.move.select([self.x, self.y], self.board[self.x][self.y])
+                                if self.name == "w":
+                                    if self.new_x == k and self.new_y == 7:
+                                        self.board[self.x][self.y] = self.board[self.x][self.y].upper()
+                                        self.move = moves.Move(self.board)
+                                        self.move.select([self.x, self.y], self.board[self.x][self.y])
+                                
+                                elif self.name == "b":
+                                    if self.new_x == k and self.new_y == 0:
+                                        self.board[self.x][self.y] = self.board[self.x][self.y].upper()
+                                        self.move = moves.Move(self.board)
+                                        self.move.select([self.x, self.y], self.board[self.x][self.y])
 
                             self.move.new_position([self.new_x, self.new_y])
 
                             print(">> isValid: Peça comida.")
                             return self.move.move()
             else:
-                print(">> isValid: Peça não pode ser comida.")
+                if self.name.lower() == "w":
+                    self.rule.turn("b") 
+                else:
+                    self.rule.turn("w")    
+
+                print(">> isValid: Peça não pode ser comida, tente novamente.")
                 return self.board
 
         elif self.name == "B" or self.name == "W":
-            if self.board[self.new_x][self.new_y] == "none":
+            if self.board[self.new_x][self.new_y] == "none" and self.board[duble_x][duble_y].lower() != piece.lower():
                 self.board = self.rule.eat(new_position)
                 self.rule.turn(self.name, [self.new_x, self.new_y])
                 self.move.new_position([self.new_x, self.new_y])
@@ -132,7 +163,12 @@ class IsValid:
                 return self.move.move()
             
             else:
-                print(">> isValid: Peça não pode ser comida.")
+                if self.name.lower() == "w":
+                    self.rule.turn("b") 
+                else:
+                    self.rule.turn("w")    
+
+                print(">> isValid: Peça não pode ser comida, tente novamente.")
                 return self.board
         
         
