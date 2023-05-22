@@ -4,7 +4,6 @@ class IsValid:
     def __init__(self, board):
         self.board = board
         self.rule = rules.Rules(board)
-        self.rule.turn("b")
     
     def position(self, position, name):
         self.x = position[0]
@@ -129,13 +128,13 @@ class IsValid:
                             self.rule.turn(self.name, [self.new_x, self.new_y])
 
                             for k in range(0, 7):
-                                if self.name == "w":
+                                if self.name == "w" and not self.rule.is_combo([self.new_x, self.new_y]):
                                     if self.new_x == k and self.new_y == 7:
                                         self.board[self.x][self.y] = self.board[self.x][self.y].upper()
                                         self.move = moves.Move(self.board)
                                         self.move.select([self.x, self.y], self.board[self.x][self.y])
                                 
-                                elif self.name == "b":
+                                elif self.name == "b" and not self.rule.is_combo([self.new_x, self.new_y]):
                                     if self.new_x == k and self.new_y == 0:
                                         self.board[self.x][self.y] = self.board[self.x][self.y].upper()
                                         self.move = moves.Move(self.board)

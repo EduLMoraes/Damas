@@ -1,7 +1,7 @@
 class Rules:
     points_b = 0
     points_w = 0
-    name = ""
+    name = "b"
 
     def __new__(cls, board):
         if not hasattr(cls, "instance"):
