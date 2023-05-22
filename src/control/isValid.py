@@ -4,6 +4,7 @@ class IsValid:
     def __init__(self, board):
         self.board = board
         self.rule = rules.Rules(board)
+        self.rule.turn("b")
     
     def position(self, position, name):
         self.x = position[0]
