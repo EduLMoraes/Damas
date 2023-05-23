@@ -2,7 +2,7 @@ import arcade
 from src.drawns import boardDrawing, pieceDrawing
 from src.control import isValid
 
-class Game(arcade.Window):
+class GameWindow(arcade.Window):
     def __init__(self, board):
         self.board = board
         self.click = True
@@ -49,7 +49,6 @@ class Game(arcade.Window):
                 elif self.board[x][y] == "B":
                     piece.draw_part([[x, y, "B"]])
 
-
     def on_mouse_press(self, x, y, button, modifiers):
         x = int(x / 70)
         y = int(y / 70)
@@ -73,4 +72,7 @@ class Game(arcade.Window):
         elif self.click == False and self.board[x][y] != "none":
             self.board = self.isValid.is_jump([x, y], self.board[x][y])
             self.click = True
+
+    def update_board(self):
+        return self.board
 

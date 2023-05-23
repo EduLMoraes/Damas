@@ -73,6 +73,8 @@ class Rules:
         if not self.is_combo(position):
             self.name = name
         
+        
+
         print(f">> rules: turno {self.name}")
         return True
     

@@ -14,8 +14,10 @@ class Game:
         for i in self.b_init_positions:
             self.board[i[0]][i[1]] = "b"
 
-        self.window = window
-        self.window.Game(self.board)
+        self.window = window.GameWindow(self.board)
+
+    def update_board(self):
+        print(">> main: update")
 
 
 def game():
