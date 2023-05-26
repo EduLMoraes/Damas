@@ -1,6 +1,7 @@
 import arcade
 from src.drawns import boardDrawing, pieceDrawing
 from src.control import isValid
+from src.IA.Jasmine import Jasmine
 
 class GameWindow(arcade.Window):
     def __init__(self, board):
