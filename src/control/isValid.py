@@ -1,4 +1,5 @@
-from src.control import rules, moves
+import pandas as pd
+from src.control import rules, moves, register
 
 class IsValid:
     def __init__(self, board):
@@ -16,7 +17,8 @@ class IsValid:
 
         self.move = moves.Move(self.board)
         self.move.select([self.x, self.y], self.board[self.x][self.y])
-            
+        
+        print(">>>>>>>>>>>>>>>>>>>>>> New Play >>>>>>>>>>>>>>>>>>>>>>>>>>")
         print(">> isValid: Peça selecionada:", name, position)
         return True
     
@@ -29,28 +31,36 @@ class IsValid:
                 if self.new_x == self.x + i and self.new_y == self.y + 1:
                     print(">> isValid: Movimento válido.")
 
-                    for i in range(0, 7):
+                    for i in range(0, 8):
                         if self.new_x == i and self.new_y == 7:
                             self.board[self.x][self.y] = "W"
                             self.move = moves.Move(self.board)
                             self.move.select([self.x, self.y], self.board[self.x][self.y])
+                            print(">> isValid: w se tornou Dama")
 
                     self.move.new_position([self.new_x, self.new_y])
-                    return self.move.move()
+                    self.board = self.move.move()
+                    self.compare()
+                    
+                    return self.board
             
         elif self.name == "b":
             for i in [-1, 1]:
                 if self.new_x == self.x + i and self.new_y == self.y - 1:
                     print(">> isValid: Movimento válido.")
 
-                    for i in range(0, 7):
+                    for i in range(0, 8):
                         if self.new_x == i and self.new_y == 0:
                             self.board[self.x][self.y] = "B"
                             self.move = moves.Move(self.board)
                             self.move.select([self.x, self.y], self.board[self.x][self.y])
+                            print(">> isValid: b se tornou Dama")
 
                     self.move.new_position([self.new_x, self.new_y])
-                    return self.move.move()
+                    self.board = self.move.move()
+                    self.compare()
+                    
+                    return self.board
                 
         elif self.name == "W":
             for i in range(0, 8):
@@ -60,8 +70,10 @@ class IsValid:
                         
                         print(">> isValid: Movimento válido.")
                         self.move.new_position([self.new_x, self.new_y])
+                        self.board = self.move.move()
+                        self.compare()
 
-                        return self.move.move()
+                        return self.board
                 
         elif self.name == "B":
             for i in range(0, 8):
@@ -72,8 +84,10 @@ class IsValid:
                         
                         print(">> isValid: Movimento válido.")
                         self.move.new_position([self.new_x, self.new_y])
+                        self.board = self.move.move()
+                        self.compare()
 
-                        return self.move.move()
+                        return self.board
 
 
         if self.name.lower() == "w":
@@ -141,9 +155,11 @@ class IsValid:
                                         self.move.select([self.x, self.y], self.board[self.x][self.y])
 
                             self.move.new_position([self.new_x, self.new_y])
+                            self.board = self.move.move()
+                            self.compare()
 
                             print(">> isValid: Peça comida.")
-                            return self.move.move()
+                            return self.board
             else:
                 if self.name.lower() == "w":
                     self.rule.turn("b") 
@@ -158,9 +174,11 @@ class IsValid:
                 self.board = self.rule.eat(new_position)
                 self.rule.turn(self.name, [self.new_x, self.new_y])
                 self.move.new_position([self.new_x, self.new_y])
+                self.board = self.move.move()
+                self.compare()
 
                 print(">> isValid: Peça comida.")
-                return self.move.move()
+                return self.board
             
             else:
                 if self.name.lower() == "w":
@@ -170,5 +188,21 @@ class IsValid:
 
                 print(">> isValid: Peça não pode ser comida, tente novamente.")
                 return self.board
-        
+    
+    def compare(self):
+        table = pd.read_csv("game.csv")
+        old_board = table.values
+
+        for x in range(8):
+            for y in range(8):
+                if old_board[x][y] != self.board[x][y] and self.board[x][y] != "none":
+                    print(">> isValid: Alteração detectada.")
+
+                    scoreboard = self.rule.scoreboard()
+                    combo = self.rule.is_combo([self.new_x, self.new_y])
+                    
+                    register.Register(f'{self.board[self.new_x][self.new_y]}', f'{(self.x, self.y)}', f'{(self.new_x, self.new_y)}', f'{(scoreboard)}', f'{combo}', f'{self.board}')
+
+        print(">> isValid: comparado")
+    
         

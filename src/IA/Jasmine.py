@@ -1,16 +1,30 @@
 import tensorflow as tf
 import keras
-from keras import models, layers
+from keras import layers, models, regularizers
 
 class JASMINE:
-    model = models.Sequential([
-        layers.Flatten(input_shape = (8, 8)),
-        layers.Dense(32, activation="relu"),
-        layers.Dense(1, activation="sigmod")
-    ])
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            cls.instance = super(JASMINE, cls).__new__(cls)
+        return cls.instance
 
-    model.compile(optimizer="sgd", loss="softmax")
+    def __init__(self, board):
+        self.model = models.Sequential([
+            layers.Flatten(input_shape = (8, 8)),
+            layers.Dense(32, activation="relu", kernel_regularizer = regularizers.l1(0.01)),
+            layers.Dense(1, activation="sigmoid"),
+            layers.Dropout(0.25)
+        ])
+        self.board = board
 
+    def train(self, x_train, y_train):
+        self.model.fit(x_train, y_train, epochs=10000)
 
+    def compile(self):
+        self.model.compile(optimizer="adam", loss="binary_crossentropy")
 
-    model.save("./src/IA/memory/jasmin.h5")
+    def play(self):
+        return self.model.predict(self.board)
+
+    def save(self):
+        self.model.save("./src/IA/memory/jasmin.h5")

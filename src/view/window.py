@@ -1,7 +1,8 @@
 import arcade
+import pandas as pd
 from src.drawns import boardDrawing, pieceDrawing
 from src.control import isValid
-from src.IA.Jasmine import Jasmine
+from src.control.register import new_round
 
 class GameWindow(arcade.Window):
     def __init__(self, board):
@@ -32,10 +33,12 @@ class GameWindow(arcade.Window):
         
         if len(whites) < 1:
             arcade.draw_text("Vitória das pretas", 150, 250, arcade.color.RED_DEVIL, 30)
+            new_round()
+
         elif len(grays) < 1:
             arcade.draw_text("Vitória das brancas", 150, 250, arcade.color.RED_DEVIL, 30)
+            new_round()
 
- 
 
         piece = pieceDrawing.PartDrawing(self)
 
@@ -73,7 +76,10 @@ class GameWindow(arcade.Window):
         elif self.click == False and self.board[x][y] != "none":
             self.board = self.isValid.is_jump([x, y], self.board[x][y])
             self.click = True
+        
+        self.save_board()
 
-    def update_board(self):
-        return self.board
+    def save_board(self):
+        table = pd.DataFrame(self.board)
+        table.to_csv("game.csv", index = False)
 
