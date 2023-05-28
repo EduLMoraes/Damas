@@ -1,7 +1,10 @@
+from src.control.register import Recuperate
 class Rules:
-    points_b = 0
-    points_w = 0
-    name = None
+    rec = Recuperate()
+    points_w = int(rec.scoreboard()[1]) if rec.scoreboard()[0] else 0
+    points_b = int(rec.scoreboard()[4]) if rec.scoreboard()[0] else 0
+    name = rec.turn() if rec.turn() else 'b'
+    round = 1
 
     def __new__(cls, board):
         if not hasattr(cls, "instance"):
@@ -11,11 +14,14 @@ class Rules:
     def __init__(self, board):
         self.board = board
 
+    def scoreboard(self):
+        return [self.points_w, self.points_b]
+
     def eat(self, position):
         x = position[0]
         y = position[1]
 
-        if self.board[x][y] == "w":
+        if self.board[x][y].lower() == "w":
             self.points_b += 1
             self.name = "w"
         else:
@@ -26,7 +32,7 @@ class Rules:
 
         if self.points_w == 8:
             print(">> rules: Vitória das peças brancas.")
-
+            
         elif self.points_b == 8:
             print(">> rules: Vitória das peças pretas.")
 
@@ -45,9 +51,13 @@ class Rules:
                 if (i + j) % 2 == 0:
                     if self.board[i][j] == self.name:
                         if not (i+1 > 7 or i-1 < 0 or j+1 > 7 or j-1 < 0):
-            
-                            if i > x and j > y and not (j + 1 > 7):
+
+                            if i > x and j > y:
                                 if self.board[i + 1][j + 1] == "none":
+                                    return True
+                                
+                            elif i > x and j < y:
+                                if self.board[i + 1][j - 1] == "none":
                                     return True
                                 
                             elif i < x and j > y:
@@ -58,22 +68,22 @@ class Rules:
                                 if self.board[i - 1][j - 1] == "none":
                                     return True
                                 
-                            elif i > x and j < y:
-                                if self.board[i + 1][j - 1] == "none":
-                                    return True
-                
         return False
     
     def turn(self, name, position = [None, None]):
-        if name == self.name:
+        if name.lower() == self.name.lower():
             return False
-        
-        print(">> rules: é combo?", self.is_combo(position))
 
         if not self.is_combo(position):
+            print(">> rules: Não há combo!")
             self.name = name
-        
+        else:
+            print(">> rule: Há combo!")
+
+
+
         print(f">> rules: turno {self.name}")
         return True
+    
     
     

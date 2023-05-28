@@ -1,8 +1,10 @@
 import arcade
+import pandas as pd
 from src.drawns import boardDrawing, pieceDrawing
 from src.control import isValid
+from src.control.register import new_round
 
-class Game(arcade.Window):
+class GameWindow(arcade.Window):
     def __init__(self, board):
         self.board = board
         self.click = True
@@ -18,6 +20,26 @@ class Game(arcade.Window):
         plane = boardDrawing.BoardDrawing(self)
         plane.draw_board()
 
+        whites = []
+        grays = []
+
+        for x in range(8):
+            for y in range(8):
+                if self.board[x][y] != "none":
+                    if self.board[x][y].lower() == "b":
+                        grays.append(self.board[x][y])
+                    else:
+                        whites.append(self.board[x][y])
+        
+        if len(whites) < 1:
+            arcade.draw_text("Vitória das pretas", 150, 250, arcade.color.RED_DEVIL, 30)
+            new_round()
+
+        elif len(grays) < 1:
+            arcade.draw_text("Vitória das brancas", 150, 250, arcade.color.RED_DEVIL, 30)
+            new_round()
+
+
         piece = pieceDrawing.PartDrawing(self)
 
         for x in range(8):
@@ -30,7 +52,6 @@ class Game(arcade.Window):
                     piece.draw_part([[x, y, "W"]])
                 elif self.board[x][y] == "B":
                     piece.draw_part([[x, y, "B"]])
-
 
     def on_mouse_press(self, x, y, button, modifiers):
         x = int(x / 70)
@@ -55,4 +76,10 @@ class Game(arcade.Window):
         elif self.click == False and self.board[x][y] != "none":
             self.board = self.isValid.is_jump([x, y], self.board[x][y])
             self.click = True
+        
+        self.save_board()
+
+    def save_board(self):
+        table = pd.DataFrame(self.board)
+        table.to_csv("game.csv", index = False)
 

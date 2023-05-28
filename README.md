@@ -1,3 +1,5 @@
+# Instructions
+
 # Damas game in python
 This project is sample, the idea is to create an IA who play whith player,
 to game play is necessary Python language, it you haven the Python 3.10 installed

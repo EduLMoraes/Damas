@@ -14,6 +14,9 @@ class Move:
         return True
 
     def move(self):
+        self.old_board = self.board
         self.board[self.x][self.y] = "none"
         self.board[self.new_x][self.new_y] = self.piece_change
         return self.board
+    
+
