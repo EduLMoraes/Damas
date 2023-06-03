@@ -1,4 +1,5 @@
 from src.control.register import Recuperate
+from qlearning import test
 class Rules:
     rec = Recuperate()
     points_w = int(rec.scoreboard()[1]) if rec.scoreboard()[0] else 0
@@ -80,7 +81,8 @@ class Rules:
         else:
             print(">> rule: Há combo!")
 
-
+        if self.name.lower() == "b":
+            test()
 
         print(f">> rules: turno {self.name}")
         return True

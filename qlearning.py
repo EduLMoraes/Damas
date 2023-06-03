@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 from src.control.register import QTable
+from src.control.moves import Move
 
 class QLearningAgent:
     def __new__(cls, num_states, num_actions, learning_rate, discount_factor):
@@ -35,8 +36,18 @@ class QLearningAgent:
         td_error = td_target - current_q
         self.q_table[state, action] += self.learning_rate * td_error
 
-def test():
 
+def play(positions, new_positions):
+    iv = Move(matriz)
+    iv.select(positions, "b")
+    iv.new_position(new_positions)
+    board = iv.move()
+    print("qlearning: Jogada feita")
+    print(board)
+    pd.DataFrame(board).to_csv("./game.csv", index=False)
+
+def test():
+    global matriz
     if os.path.exists("./game.csv"):
         matriz = pd.read_csv('./game.csv').values
         positions = []
@@ -55,6 +66,7 @@ def test():
 
     agent = QLearningAgent(num_states, num_actions, learning_rate, discount_factor)
 
+    reward = 0
     for state in range(num_states):
         action = agent.choose_action(state)
 
@@ -64,20 +76,26 @@ def test():
             next_state = 0
 
         if os.path.exists("./game.csv"):
-            for i in positions:
-                if action == 0 and (i[0]+1 < 8 and i[1]+1 < 8):
-                    x = i[0]+1
-                    y = i[1]+1
-                    if (matriz[x][y].lower() == 'none'):
-                        reward = 1
-                    else:
-                        reward = 0
 
-                elif action == 1 and (i[0]+1 < 8 and i[1]-1 > 0):
+            for i in positions:
+
+                if action == 0 and (i[0]+1 < 8 and i[1]+1 < 8):
+                    action += 1
+                    #x = i[0]+1
+                    #y = i[1]+1
+                    #if (matriz[x][y].lower() == 'none'):
+                    #    play([i[0], i[1]], [x, y])
+                    #    reward = 0.5
+                    #    print("action 0")
+                    #else:
+                    #    reward = 0
+
+                if action == 1 and (i[0]+1 < 8 and i[1]-1 > 0):
                     x = i[0]+1
                     y = i[1]-1
                     if (matriz[x][y].lower() == 'none'):
-                        reward = 1
+                        play([i[0], i[1]], [x, y])
+                        reward = 0.5
                     else:
                         reward = 0
 
@@ -85,22 +103,24 @@ def test():
                     x = i[0]-1
                     y = i[1]-1
                     if (matriz[x][y].lower() == 'none'):
-                        reward = 1
+                        play([i[0], i[1]], [x, y])
+                        reward = 0.5
                     else:
                         reward = 0
 
-                elif action == 3 and (i[0]-1 > 0 and i[1]+1 < 8):
-                    x = i[0]-1
-                    y = i[1]+1
-                    if (matriz[x][y].lower() == 'none'):
-                        reward = 1
-                    else:
-                        reward = 0
+                #elif action == 3 and (i[0]-1 > 0 and i[1]+1 < 8):
+                #    x = i[0]-1
+                #    y = i[1]+1
+                #    if (matriz[x][y].lower() == 'none'):
+                #        reward = 0.5
+                #        play([i[0], i[1]], [x, y])
+                #    else:
+                #        reward = 0
         else:
-            reward = 1
+            reward = 0
 
         agent.update_q_table(state, action, reward, next_state)
-        os.system("clear")
+        #os.system("clear")
         print(agent.q_table)
     QTable().write(agent.q_table)
 test()

@@ -1,6 +1,5 @@
 import pandas as pd
 from src.control import rules, moves, register
-from qlearning import test
 
 class IsValid:
     def __init__(self, board):
@@ -42,7 +41,6 @@ class IsValid:
                     self.move.new_position([self.new_x, self.new_y])
                     self.board = self.move.move()
                     self.compare()
-                    test()
                     
                     
                     return self.board
@@ -62,7 +60,6 @@ class IsValid:
                     self.move.new_position([self.new_x, self.new_y])
                     self.board = self.move.move()
                     self.compare()
-                    test()
                     
                     
                     return self.board
@@ -77,7 +74,6 @@ class IsValid:
                         self.move.new_position([self.new_x, self.new_y])
                         self.board = self.move.move()
                         self.compare()
-                        test()
                         
 
                         return self.board
@@ -85,7 +81,6 @@ class IsValid:
         elif self.name == "B":
             for i in range(0, 8):
                 for j in range(0, 8):
-                    print(">> isValid: Testando posição:", [i, j])
                     if (self.new_x == i and self.new_y == j and
                          (i != self.x and j != self.y) and (abs(self.x - i) == abs(self.y - j))):
                         
@@ -93,7 +88,6 @@ class IsValid:
                         self.move.new_position([self.new_x, self.new_y])
                         self.board = self.move.move()
                         self.compare()
-                        test()
                         
 
                         return self.board
@@ -166,7 +160,6 @@ class IsValid:
                             self.move.new_position([self.new_x, self.new_y])
                             self.board = self.move.move()
                             self.compare()
-                            test()
                             
 
                             print(">> isValid: Peça comida.")
@@ -187,7 +180,6 @@ class IsValid:
                 self.move.new_position([self.new_x, self.new_y])
                 self.board = self.move.move()
                 self.compare()
-                test()
                 
 
                 print(">> isValid: Peça comida.")
