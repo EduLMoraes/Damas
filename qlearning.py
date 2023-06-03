@@ -31,10 +31,13 @@ class QLearningAgent:
 def test():
     
     matriz = pd.read_csv('./game.csv').values
+    positions = []
+    for x in range(8):
+        for y in range(8):
+            if matriz[x][y].lower() == 'b':
+                positions.append((x, y))
 
-    print(matriz)
-
-    num_states = 64
+    num_states = len(positions)
     num_actions = 4
     learning_rate = 0.1
     discount_factor = 0.9
@@ -46,16 +49,42 @@ def test():
 
     next_state = 1
 
-    positions = []
-    for x in range(0, 7):
-        for y in range(0, 7):
-            if matriz[x][y].lower() == 'b':
-                positions.append((x, y))
 
-    print(positions)
+    for i in positions:
+        if action == 0 and (i[0]+1 < 8 and i[1]+1 < 8):
+            x = i[0]+1
+            y = i[1]+1
+            if (matriz[x][y].lower() == 'none'):
+                reward = 0.5
+            else:
+                reward = 0
 
-    if action == 0:
-        reward = 0.5
+        elif action == 1 and (i[0]+1 < 8 and i[1]-1 > 0):
+            x = i[0]+1
+            y = i[1]-1
+            if (matriz[x][y].lower() == 'none'):
+                reward = 0.5
+            else:
+                reward = 0
+
+        elif action == 2 and (i[0]-1 > 0 and i[1]-1 > 0):
+            x = i[0]-1
+            y = i[1]-1
+            if (matriz[x][y].lower() == 'none'):
+                reward = 0.5
+            else:
+                reward = 0
+
+        elif action == 3 and (i[0]-1 > 0 and i[1]+1 < 8):
+            x = i[0]-1
+            y = i[1]+1
+            if (matriz[x][y].lower() == 'none'):
+                reward = 0.5
+            else:
+                reward = 0
+
 
     agent.update_q_table(state, action, reward, next_state)
+    print(agent.q_table)
+    
 test()

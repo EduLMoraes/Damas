@@ -1,6 +1,6 @@
 import pandas as pd
 from src.control import rules, moves, register
-from src.IA.qlearning import test
+from qlearning import test
 
 class IsValid:
     def __init__(self, board):
