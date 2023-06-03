@@ -84,6 +84,22 @@ def new_round(rounds = round()):
     if os.path.exists("./game.csv"):
         os.remove("./game.csv")
 
+class QTable:
+    def __init__(self):
+        if os.path.exists("qtable.csv"):
+            self.qtable = pd.read_csv('qtable.csv')
+            self.has_qtable = True
+        else:
+            self.has_qtable = False
+
+    def write(self, table):
+        pd.DataFrame(table).to_csv("qtable.csv", index = False)
+
+    def read(self):
+        if self.has_qtable:
+            return True
+        return False
+
 class Register:
     def __init__(self, *info):
         self.playeds = [
