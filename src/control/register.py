@@ -4,28 +4,48 @@ import pandas as pd
 
 class Recuperate:
     def __init__(self):
-        if os.path.exists("./src/IA/memory/history.csv"):
+        if os.path.exists("./src/IA/memory/history.csv") and os.path.exists("./game.csv"):
             self.history = pd.read_csv('./src/IA/memory/history.csv')
             self.has_history = True
         else:
             self.has_history = False
-        
+    
+    def matrix(self):
+
+        list_matrix = []
+        list_clean = []
+        print(self.history['matrix'])
+        for i in self.history['matrix']:
+            list_matrix.append(i)
+
+        for i in list_matrix:
+            if len(list_clean) == 0:
+                list_clean.append(i)
+            else:
+                for j in range(len(list_clean)):
+                    if list_matrix[j] != list_clean[j]:
+                        list_clean.append(i)
+
+
+        print("tamanho lista:", len(list_clean))
+        print("tamanho history:", len(self.history['matrix']))
+
+        return self.history['matrix']
+
     def game(self):
-        matrix = self.history['matrix']
-        last_row = len(matrix) - 1
+        if os.path.exists("./game.csv"):
+            print(">> register: Jogo recuperado.")
 
-        print(">> register: Jogo recuperado.")
-
-        board = eval(matrix[last_row])
-
-        return board
+            board = pd.read_csv("./game.csv")
+            
+            return board.values
+        return False
 
     def turn(self):
         if self.has_history:
             turn = self.history['team']
             last = len(turn) - 1
-
-            print(">> register: Jogo recuperado.")
+            print(">> register: Turno recuperado.")
 
             turn = turn[last]
 
@@ -38,7 +58,7 @@ class Recuperate:
             score = self.history['scoreboard']
             last = len(score) - 1
 
-            print(">> register: Jogo recuperado.")
+            print(">> register: Pontuação recuperada.")
 
             score = score[last]
 
@@ -114,7 +134,7 @@ class Register:
     def exists(self):
 
         for row in self.history:
-            if row == self.playeds[0]:
+            if row['matrix'] == self.playeds[0]['matrix']:
                 return True
 
         return False
