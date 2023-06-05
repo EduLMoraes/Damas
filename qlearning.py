@@ -81,53 +81,49 @@ def test():
                     if(i[0]+1 < 8 and i[1]+1 < 8):
                         x = i[0]+1
                         y = i[1]+1
-                        if (matriz[x][y].lower() != 'b'):
+                        if (matriz[x][y].lower() == 'none'):
                             play([i[0], i[1]], [x, y])
                             reward = 0.5
                         else:
                             reward = 0
                     else:
                         action += 1
-
 
                 if action == 1:
                     if(i[0]+1 < 8 and i[1]-1 > 0):
                         x = i[0]+1
                         y = i[1]-1
-                        if (matriz[x][y].lower() != 'b'):
+                        if (matriz[x][y].lower() == 'none'):
                             play([i[0], i[1]], [x, y])
                             reward = 0.5
                         else:
                             reward = 0
                     else:
                         action += 1
-                        
 
                 if action == 2:
                     if(i[0]-1 > 0 and i[1]-1 > 0):
                         x = i[0]-1
                         y = i[1]-1
-                        if (matriz[x][y].lower() != 'b'):
+                        if (matriz[x][y].lower() == 'none'):
                             play([i[0], i[1]], [x, y])
                             reward = 0.5
                         else:
                             reward = 0
                     else:
                         action += 1
-                        
 
                 if action == 3:
                     if(i[0]-1 > 0 and i[1]+1 < 8):
                         x = i[0]-1
                         y = i[1]+1
-                        if (matriz[x][y].lower() != 'b'):
+                        if (matriz[x][y].lower() == 'none'):
                             play([i[0], i[1]], [x, y])
                             reward = 0.5
                         else:
                             reward = 0
                     else:
                         action = 0
-                        
         else:
             reward = 0
 
