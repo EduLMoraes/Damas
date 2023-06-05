@@ -82,7 +82,8 @@ class Rules:
             print(">> rule: Há combo!")
 
         if self.name.lower() == "b":
-            test()
+            print(">> rule: teste: ", test())
+            self.name = "b"
 
         print(f">> rules: turno {self.name}")
         return True

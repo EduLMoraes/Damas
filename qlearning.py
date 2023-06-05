@@ -76,51 +76,63 @@ def test():
             next_state = 0
 
         if os.path.exists("./game.csv"):
-
             for i in positions:
-
-                if action == 0 and (i[0]+1 < 8 and i[1]+1 < 8):
-                    action += 1
-                    #x = i[0]+1
-                    #y = i[1]+1
-                    #if (matriz[x][y].lower() == 'none'):
-                    #    play([i[0], i[1]], [x, y])
-                    #    reward = 0.5
-                    #    print("action 0")
-                    #else:
-                    #    reward = 0
-
-                if action == 1 and (i[0]+1 < 8 and i[1]-1 > 0):
-                    x = i[0]+1
-                    y = i[1]-1
-                    if (matriz[x][y].lower() == 'none'):
-                        play([i[0], i[1]], [x, y])
-                        reward = 0.5
+                if action == 0:
+                    if(i[0]+1 < 8 and i[1]+1 < 8):
+                        x = i[0]+1
+                        y = i[1]+1
+                        if (matriz[x][y].lower() != 'b'):
+                            play([i[0], i[1]], [x, y])
+                            reward = 0.5
+                        else:
+                            reward = 0
                     else:
-                        reward = 0
+                        action += 1
 
-                elif action == 2 and (i[0]-1 > 0 and i[1]-1 > 0):
-                    x = i[0]-1
-                    y = i[1]-1
-                    if (matriz[x][y].lower() == 'none'):
-                        play([i[0], i[1]], [x, y])
-                        reward = 0.5
+
+                if action == 1:
+                    if(i[0]+1 < 8 and i[1]-1 > 0):
+                        x = i[0]+1
+                        y = i[1]-1
+                        if (matriz[x][y].lower() != 'b'):
+                            play([i[0], i[1]], [x, y])
+                            reward = 0.5
+                        else:
+                            reward = 0
                     else:
-                        reward = 0
+                        action += 1
+                        
 
-                #elif action == 3 and (i[0]-1 > 0 and i[1]+1 < 8):
-                #    x = i[0]-1
-                #    y = i[1]+1
-                #    if (matriz[x][y].lower() == 'none'):
-                #        reward = 0.5
-                #        play([i[0], i[1]], [x, y])
-                #    else:
-                #        reward = 0
+                if action == 2:
+                    if(i[0]-1 > 0 and i[1]-1 > 0):
+                        x = i[0]-1
+                        y = i[1]-1
+                        if (matriz[x][y].lower() != 'b'):
+                            play([i[0], i[1]], [x, y])
+                            reward = 0.5
+                        else:
+                            reward = 0
+                    else:
+                        action += 1
+                        
+
+                if action == 3:
+                    if(i[0]-1 > 0 and i[1]+1 < 8):
+                        x = i[0]-1
+                        y = i[1]+1
+                        if (matriz[x][y].lower() != 'b'):
+                            play([i[0], i[1]], [x, y])
+                            reward = 0.5
+                        else:
+                            reward = 0
+                    else:
+                        action = 0
+                        
         else:
             reward = 0
 
         agent.update_q_table(state, action, reward, next_state)
-        #os.system("clear")
+        os.system("clear")
         print(agent.q_table)
     QTable().write(agent.q_table)
-test()
+    return True

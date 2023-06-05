@@ -1,9 +1,9 @@
 0,1,2,3,4,5,6,7
-w,none,none,none,none,none,none,none
-none,w,none,none,none,none,none,none
-w,none,none,none,b,none,none,none
-none,w,none,none,none,b,none,none
-w,none,none,none,b,none,none,none
-none,none,none,w,none,b,none,none
-w,none,none,none,none,none,none,none
-none,none,none,b,none,b,none,b
+w,none,none,none,none,none,b,none
+none,w,none,none,none,none,none,b
+w,none,none,none,none,none,b,none
+none,w,none,none,none,none,none,b
+w,none,none,none,none,none,b,none
+none,w,none,none,none,none,none,b
+w,none,w,none,none,none,none,none
+none,none,none,none,none,b,none,b
