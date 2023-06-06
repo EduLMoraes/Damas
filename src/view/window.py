@@ -4,6 +4,7 @@ from src.drawns import boardDrawing, pieceDrawing
 from src.control import isValid
 from src.control.register import new_round
 
+
 class GameWindow(arcade.Window):
     def __init__(self, board):
         self.board = board
@@ -53,6 +54,7 @@ class GameWindow(arcade.Window):
                 elif self.board[x][y] == "B":
                     piece.draw_part([[x, y, "B"]])
 
+
     def on_mouse_press(self, x, y, button, modifiers):
         x = int(x / 70)
         y = int(y / 70)
@@ -77,7 +79,7 @@ class GameWindow(arcade.Window):
             self.board = self.isValid.is_jump([x, y], self.board[x][y])
             self.click = True
         
-        self.save_board()
+
 
     def save_board(self):
         table = pd.DataFrame(self.board)

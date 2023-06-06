@@ -72,17 +72,18 @@ class Rules:
         return False
     
     def turn(self, name, position = [None, None]):
-        if name.lower() == self.name.lower():
+        if name.lower() != 'w':
             return False
 
         if not self.is_combo(position):
             print(">> rules: Não há combo!")
             self.name = name
+            if self.name.lower() == "b":
+                print(">> rule: teste: ", test(self.board))
+                self.name = "b"
         else:
             print(">> rule: Há combo!")
 
-        if self.name.lower() == "b":
-            test()
 
         print(f">> rules: turno {self.name}")
         return True
