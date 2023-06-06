@@ -1,5 +1,8 @@
+import os
 import pandas as pd
 from src.control import rules, moves, register
+from src.control.save import save
+from qlearning import test
 
 class IsValid:
     def __init__(self, board):
@@ -18,6 +21,7 @@ class IsValid:
         self.move = moves.Move(self.board)
         self.move.select([self.x, self.y], self.board[self.x][self.y])
         
+        os.system('clear')
         print(">>>>>>>>>>>>>>>>>>>>>> New Play >>>>>>>>>>>>>>>>>>>>>>>>>>")
         print(">> isValid: Peça selecionada:", name, position)
         return True
@@ -197,17 +201,18 @@ class IsValid:
     def compare(self):
         table = pd.read_csv("game.csv")
         old_board = table.values
+        self.board = test(self.board)
 
         for x in range(8):
             for y in range(8):
                 if old_board[x][y] != self.board[x][y] and self.board[x][y] != "none":
                     print(">> isValid: Alteração detectada.")
-
                     scoreboard = self.rule.scoreboard()
                     combo = self.rule.is_combo([self.new_x, self.new_y])
-                    
                     register.Register(f'{self.board[self.new_x][self.new_y]}', f'{(self.x, self.y)}', f'{(self.new_x, self.new_y)}', f'{(scoreboard)}', f'{combo}', f'{self.board}')
 
         print(">> isValid: comparado")
+        save(self.board)
+        
     
         

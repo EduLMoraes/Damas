@@ -3,6 +3,7 @@ import pandas as pd
 import os
 from src.control.register import QTable
 from src.control.moves import Move
+from src.control.save import save
 
 class QLearningAgent:
     def __new__(cls, num_states, num_actions, learning_rate, discount_factor):
@@ -37,19 +38,17 @@ class QLearningAgent:
         self.q_table[state, action] += self.learning_rate * td_error
 
 
-def play(positions, new_positions):
+def play(positions, new_positions, matriz):
     iv = Move(matriz)
     iv.select(positions, "b")
     iv.new_position(new_positions)
     board = iv.move()
     print("qlearning: Jogada feita")
-    print(board)
-    pd.DataFrame(board).to_csv("./game.csv", index=False)
+    return board
 
-def test():
-    global matriz
+def test(board):
     if os.path.exists("./game.csv"):
-        matriz = pd.read_csv('./game.csv').values
+        matriz = board
         positions = []
         for x in range(8):
             for y in range(8):
@@ -66,6 +65,7 @@ def test():
 
     agent = QLearningAgent(num_states, num_actions, learning_rate, discount_factor)
 
+    played = False
     reward = 0
     for state in range(num_states):
         action = agent.choose_action(state)
@@ -75,15 +75,18 @@ def test():
         else:
             next_state = 0
 
-        if os.path.exists("./game.csv"):
+        if not played:
             for i in positions:
                 if action == 0:
                     if(i[0]+1 < 8 and i[1]+1 < 8):
                         x = i[0]+1
                         y = i[1]+1
                         if (matriz[x][y].lower() == 'none'):
-                            play([i[0], i[1]], [x, y])
+                            matriz = play([i[0], i[1]], [x, y], matriz)
                             reward = 0.5
+                            played = True
+                            break
+                            
                         else:
                             reward = 0
                     else:
@@ -94,8 +97,11 @@ def test():
                         x = i[0]+1
                         y = i[1]-1
                         if (matriz[x][y].lower() == 'none'):
-                            play([i[0], i[1]], [x, y])
+                            matriz = play([i[0], i[1]], [x, y], matriz)
                             reward = 0.5
+                            played = True
+
+                            break
                         else:
                             reward = 0
                     else:
@@ -106,8 +112,11 @@ def test():
                         x = i[0]-1
                         y = i[1]-1
                         if (matriz[x][y].lower() == 'none'):
-                            play([i[0], i[1]], [x, y])
+                            matriz = play([i[0], i[1]], [x, y], matriz)
                             reward = 0.5
+                            played = True
+
+                            break
                         else:
                             reward = 0
                     else:
@@ -118,17 +127,21 @@ def test():
                         x = i[0]-1
                         y = i[1]+1
                         if (matriz[x][y].lower() == 'none'):
-                            play([i[0], i[1]], [x, y])
+                            matriz = play([i[0], i[1]], [x, y], matriz)
                             reward = 0.5
+                            played = True
+
+                            break
                         else:
                             reward = 0
                     else:
                         action = 0
+
         else:
             reward = 0
+            break
 
         agent.update_q_table(state, action, reward, next_state)
-        os.system("clear")
         print(agent.q_table)
     QTable().write(agent.q_table)
-    return True
+    return matriz

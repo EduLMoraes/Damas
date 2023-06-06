@@ -79,7 +79,6 @@ class GameWindow(arcade.Window):
             self.board = self.isValid.is_jump([x, y], self.board[x][y])
             self.click = True
         
-        self.save_board()
 
 
     def save_board(self):

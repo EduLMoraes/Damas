@@ -2,6 +2,7 @@ import arcade
 import os
 from src.view import window
 from src.factory import board
+from src.control.save import save
 from src.control.register import Recuperate
 
 class Game:
@@ -16,9 +17,9 @@ class Game:
             for i in self.b_init_positions:
                 self.board[i[0]][i[1]] = "b"
         else:
-            rec = Recuperate()
             self.board = Recuperate().game()
 
+        save(self.board)
         self.window = window.GameWindow(self.board)
 
     def update_board(self):
