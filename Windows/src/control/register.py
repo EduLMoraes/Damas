@@ -66,19 +66,19 @@ class Recuperate:
         return ([0, 0])
 
 def first_round():
-    with open('./src/IA/memory/round.txt', 'w') as file:
+    with open('./round.txt', 'w') as file:
         file.write(str(1))
 
 def round():
-    if not os.path.exists('./src/IA/memory/round.txt'):
+    if not os.path.exists('./round.txt'):
         first_round()
 
-    with open("./src/IA/memory/round.txt", 'r') as file:
+    with open("./round.txt", 'r') as file:
         rounds = file.read()
         return int(rounds)
     
 def new_round(rounds = round()):
-    with open("./src/IA/memory/round.txt", 'w') as file:
+    with open("./round.txt", 'w') as file:
         file.write(str(rounds+1))
 
     if os.path.exists("./game.csv"):
